@@ -1,25 +1,25 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><umlet_diagram><help_text/><zoom_level>10</zoom_level><element><type>com.umlet.element.base.Class</type><coordinates><x>10</x><y>300</y><w>110</w><h>50</h></coordinates><panel_attributes>Loader
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><umlet_diagram><help_text/><zoom_level>10</zoom_level><element><type>com.umlet.element.base.Class</type><coordinates><x>10</x><y>290</y><w>110</w><h>50</h></coordinates><panel_attributes>Loader
 --
 file : IO::File
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>10</x><y>60</y><w>110</w><h>40</h></coordinates><panel_attributes>Walker
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>10</x><y>50</y><w>110</w><h>40</h></coordinates><panel_attributes>Walker
 --
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>160</x><y>140</y><w>240</w><h>90</h></coordinates><panel_attributes>Machine
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>160</x><y>130</y><w>240</w><h>90</h></coordinates><panel_attributes>Machine
 --
 opcodes : ArrayRef[OP]
 stack : ArrayRef[SV]
 data : ArrayRef[SV]
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>30</x><y>150</y><w>208</w><h>190</h></coordinates><panel_attributes>lt=&lt;.
-                     loads to&gt;</panel_attributes><additional_attributes>130;30;90;170</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>0</x><y>70</y><w>206</w><h>120</h></coordinates><panel_attributes>lt=&lt;.
-                     runs on&gt;</panel_attributes><additional_attributes>160;100;60;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>570</x><y>80</y><w>140</w><h>120</h></coordinates><panel_attributes>OP
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>30</x><y>140</y><w>208</w><h>190</h></coordinates><panel_attributes>lt=&lt;.
+                     loads to&gt;</panel_attributes><additional_attributes>130;30;90;170</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>0</x><y>60</y><w>206</w><h>120</h></coordinates><panel_attributes>lt=&lt;.
+                     runs on&gt;</panel_attributes><additional_attributes>160;100;60;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>570</x><y>70</y><w>140</w><h>120</h></coordinates><panel_attributes>OP
 --
 +pp : PP
 +next : OPAddr
 +sibling : OPAddr
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>350</y><w>160</w><h>170</h></coordinates><panel_attributes>CV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>340</y><w>160</w><h>170</h></coordinates><panel_attributes>CV
 --
 comp_stash : STASH
 start : OPAddr
@@ -30,53 +30,53 @@ depth : int
 padlist : PADLIST
 cvflags : int
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>370</x><y>70</y><w>220</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-                    stores&gt;</panel_attributes><additional_attributes>200;30;30;90</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>370</x><y>180</y><w>420</w><h>210</h></coordinates><panel_attributes>lt=&lt;.
-                     stores&gt;</panel_attributes><additional_attributes>400;190;30;30</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>680</x><y>40</y><w>90</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;60;70;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>890</x><y>260</y><w>140</w><h>30</h></coordinates><panel_attributes>PP::multiply</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>750</x><y>60</y><w>110</w><h>30</h></coordinates><panel_attributes>BINOP
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>810</x><y>220</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;30;80;50</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>750</x><y>120</y><w>110</w><h>30</h></coordinates><panel_attributes>PADOP</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>680</x><y>70</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;30;70;70</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>890</x><y>200</y><w>140</w><h>30</h></coordinates><panel_attributes>PP::gvsv</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>810</x><y>190</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;50;80;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>740</x><y>230</y><w>100</w><h>50</h></coordinates><panel_attributes>PP
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>370</x><y>60</y><w>220</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
+                    stores&gt;</panel_attributes><additional_attributes>200;30;30;90</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>370</x><y>170</y><w>420</w><h>210</h></coordinates><panel_attributes>lt=&lt;.
+                     stores&gt;</panel_attributes><additional_attributes>400;190;30;30</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>680</x><y>30</y><w>90</w><h>80</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;60;70;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>890</x><y>250</y><w>140</w><h>30</h></coordinates><panel_attributes>PP::multiply</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>750</x><y>50</y><w>110</w><h>30</h></coordinates><panel_attributes>BINOP
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>810</x><y>210</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;30;80;50</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>750</x><y>110</y><w>110</w><h>30</h></coordinates><panel_attributes>PADOP</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>680</x><y>60</y><w>90</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;30;70;70</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>890</x><y>190</y><w>140</w><h>30</h></coordinates><panel_attributes>PP::gvsv</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>810</x><y>180</y><w>100</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>30;50;80;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>740</x><y>220</y><w>100</w><h>50</h></coordinates><panel_attributes>PP
 --
 --
 +call()
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>630</x><y>170</y><w>132</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
-        calls&gt;</panel_attributes><additional_attributes>110;90;40;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>980</x><y>390</y><w>130</w><h>70</h></coordinates><panel_attributes>PVMG
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>630</x><y>160</y><w>132</w><h>110</h></coordinates><panel_attributes>lt=&lt;.
+        calls&gt;</panel_attributes><additional_attributes>110;90;40;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>980</x><y>380</y><w>130</w><h>70</h></coordinates><panel_attributes>PVMG
 --
 magic : MAGIC // if magic
 stash : STASH // if blessed
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>400</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1160</x><y>390</y><w>130</w><h>90</h></coordinates><panel_attributes>PVNV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>390</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1160</x><y>380</y><w>130</w><h>90</h></coordinates><panel_attributes>PVNV
 --
 iv : Int
 nv : Float
 pv : Str
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1080</x><y>400</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1340</x><y>390</y><w>130</w><h>90</h></coordinates><panel_attributes>SV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1080</x><y>390</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1340</x><y>380</y><w>130</w><h>90</h></coordinates><panel_attributes>SV
 --
 svaddr : SVAddr
 refcnt = Int
 flags = Int
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1260</x><y>400</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1160</x><y>500</y><w>130</w><h>30</h></coordinates><panel_attributes>NULL
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1260</x><y>390</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>1160</x><y>490</y><w>130</w><h>30</h></coordinates><panel_attributes>NULL
 --
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1260</x><y>420</y><w>100</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;90</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>540</y><w>160</w><h>70</h></coordinates><panel_attributes>AV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>1260</x><y>410</y><w>100</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;90</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>530</y><w>160</w><h>70</h></coordinates><panel_attributes>AV
 --
 array : ArrayRef[SV]
 avflags : Int
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>630</y><w>160</w><h>60</h></coordinates><panel_attributes>HV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>620</y><w>160</w><h>60</h></coordinates><panel_attributes>HV
 --
 array : HashRef[SV]
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>560</x><y>630</y><w>160</w><h>60</h></coordinates><panel_attributes>STASH
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>560</x><y>620</y><w>160</w><h>60</h></coordinates><panel_attributes>STASH
 --
 name : Str
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>460</x><y>540</y><w>260</w><h>70</h></coordinates><panel_attributes>PADLIST
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Class</type><coordinates><x>460</x><y>530</y><w>260</w><h>70</h></coordinates><panel_attributes>PADLIST
 --
 names : ArrayRef[Str]
 values : ArrayRef[ArrayRef[SVAddr]] // ?
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>690</x><y>630</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>430</y><w>140</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>120;30;30;140</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>430</y><w>160</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>140;30;30;230</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>590</x><y>460</y><w>200</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;30;30;80</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>710</y><w>160</w><h>150</h></coordinates><panel_attributes>GV
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>690</x><y>620</y><w>100</w><h>50</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>80;30;30;30</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>420</y><w>140</w><h>160</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>120;30;30;140</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>420</y><w>160</w><h>250</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>140;30;30;230</additional_attributes></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>590</x><y>450</y><w>200</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;30;30;80</additional_attributes></element><element><type>com.umlet.element.base.Class</type><coordinates><x>770</x><y>700</y><w>160</w><h>210</h></coordinates><panel_attributes>GV
 --
 name : Str
 gvstash : SVAddr
@@ -89,5 +89,5 @@ cv : CV
 line : Int
 file : Str
 --
-</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>430</y><w>180</w><h>330</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>160;30;30;310</additional_attributes></element><element><type>com.umlet.element.base.Package</type><coordinates><x>440</x><y>10</y><w>1050</w><h>850</h></coordinates><panel_attributes>PPVM::B
+</panel_attributes><additional_attributes/></element><element><type>com.umlet.element.base.Relation</type><coordinates><x>900</x><y>420</y><w>180</w><h>330</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>160;30;30;310</additional_attributes></element><element><type>com.umlet.element.base.Package</type><coordinates><x>440</x><y>0</y><w>1050</w><h>940</h></coordinates><panel_attributes>PPVM::B
 </panel_attributes><additional_attributes/></element></umlet_diagram>
