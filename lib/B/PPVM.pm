@@ -7,36 +7,46 @@ use B;
 use YAML::XS;
 
 
-sub ppvm_dump {
-    my ($memory, $what) = @_;
-
-    my $bobj = eval { $what->isa('B::OBJECT') } ? $what : B::svref_2object($what);
-    my $addr = ${$bobj};
-
-    return if exists $memory->{$addr};
-
-    $memory->{$addr} = 1;  # prevent endless recursing
-    $memory->{$addr} = {
-        addr => $addr,
-        $bobj->ppvm_dump($memory)
-    };
-
-    return { $addr => $memory->{addr} };
-};
-
-
 sub compile {
     my @args = @_;
 
     return sub {
-        my $memory = +{};
+        my $memory = B::PPVM::Memory->new;
         my $main_stash = \%main::;
 
-        ppvm_dump($memory, $main_stash);
+        $memory->add_object($main_stash);
         print Dump $memory;
 
         return @args;
     };
+};
+
+
+package B::PPVM::Memory;
+
+use B;
+
+sub new {
+    my ($class) = @_;
+
+    return bless +{} => $class;
+};
+
+sub add_object {
+    my ($self, $what) = @_;
+
+    my $bobj = eval { $what->isa('B::OBJECT') } ? $what : B::svref_2object($what);
+    my $addr = ${$bobj};
+
+    return if exists $self->{$addr};
+
+    $self->{$addr} = 1;  # prevent endless recursing
+    $self->{$addr} = {
+        addr => $addr,
+        $bobj->ppvm_dump($self),
+    };
+
+    return { $addr => $self->{addr} };
 };
 
 
@@ -85,7 +95,7 @@ sub ppvm_dump {
     my ($memory) = my @args = @_;
 
     my $rv = $self->RV;
-    B::PPVM::ppvm_dump($memory, $rv);
+    $memory->add_object($rv);
 
     return (
         $self->B::SV::ppvm_dump(@args),
@@ -141,9 +151,9 @@ sub ppvm_dump {
     my ($self) = shift;
     my ($memory) = my @args = @_;
 
-return ( $self->B::IV::ppvm_dump(@args), class => 'IV'  ) if $self->FLAGS & B::SVf_IOK;
-return ( $self->B::PV::ppvm_dump(@args), class => 'PV'  ) if $self->FLAGS & B::SVf_POK;
-return ();
+    return ( $self->B::IV::ppvm_dump(@args), class => 'IV'  ) if $self->FLAGS & B::SVf_IOK;
+    return ( $self->B::PV::ppvm_dump(@args), class => 'PV'  ) if $self->FLAGS & B::SVf_POK;
+    return ();
 };
 
 
@@ -153,9 +163,9 @@ sub ppvm_dump {
     my ($self) = shift;
     my ($memory) = my @args = @_;
 
-return ( $self->B::PVIV::ppvm_dump(@args) ) if $self->FLAGS & (B::SVf_IOK | B::SVf_POK);
-return ( $self->B::NV::ppvm_dump(@args), class => 'NV' ) if $self->FLAGS & B::SVf_NOK;
-return ();
+    return ( $self->B::PVIV::ppvm_dump(@args) ) if $self->FLAGS & (B::SVf_IOK | B::SVf_POK);
+    return ( $self->B::NV::ppvm_dump(@args), class => 'NV' ) if $self->FLAGS & B::SVf_NOK;
+    return ();
 };
 
 
@@ -165,17 +175,18 @@ sub ppvm_dump {
     my ($self) = shift;
     my ($memory) = my @args = @_;
 
-    B::PPVM::ppvm_dump($memory, $_) foreach $self->MAGIC;
+    $memory->add_object($_) foreach $self->MAGIC;
 
     my $svstash = $self->SvSTASH->isa('B::HV') && $self->SvSTASH->NAME ne 'B::MAGIC'
         ? $self->SvSTASH
         : undef;
-    B::PPVM::ppvm_dump($memory, $self->SvSTASH) if $svstash;
+    $memory->add_object($self->SvSTASH) if $svstash;
 
     return (
         $self->B::OBJECT::ppvm_dump(@args),
-        scalar $self->MAGIC ? ( magic   => [ map { ${$_} } $self->MAGIC ] ) : (),
-        ${$svstash} ? ( svstash => ${$svstash} ) : 0,  # FIXME
+
+#        scalar $self->MAGIC ? ( magic => [ map { ${$_} } $self->MAGIC ] ) : (),
+#        ${$svstash} ? ( svstash => ${$svstash} ) : 0,  # FIXME
     );
 };
 
@@ -186,14 +197,30 @@ sub ppvm_dump {
     my ($self) = shift;
     my ($memory) = my @args = @_;
 
-    B::PPVM::ppvm_dump($memory, $self->$_) foreach qw(SV AV HV);
+    $memory->add_object($self->$_) foreach qw(SV AV HV);
 
     return (
         $self->SUPER::ppvm_dump(@args),
         name => $self->NAME,
-        sv   => ${$self->SV},
-        av   => ${$self->AV},
-        hv   => ${$self->HV},
+        ${$self->SV} ? (sv => ${$self->SV} ) : (),
+        ${$self->AV} ? (av => ${$self->AV} ) : (),
+        ${$self->HV} ? (hv => ${$self->HV} ) : (),
+        ${$self->CV} ? (cv => ${$self->CV} ) : (),
+    );
+};
+
+
+package B::AV;
+
+sub ppvm_dump {
+    my ($self) = shift;
+    my ($memory) = my @args = @_;
+
+    $memory->add_object($_) foreach $self->ARRAY;
+
+    return (
+        $self->SUPER::ppvm_dump(@args),
+        array => [ map { ${$_} } $self->ARRAY ],
     );
 };
 
@@ -207,7 +234,7 @@ sub ppvm_dump {
     my @array;
     my %hash = $self->ARRAY;
     while (my ($key, $val) = each %hash) {
-        B::PPVM::ppvm_dump($memory, $val);
+        $memory->add_object($val);
         push @array, $key => ${$val};
     };
 
