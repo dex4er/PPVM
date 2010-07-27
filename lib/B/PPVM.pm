@@ -15,8 +15,8 @@ sub ppvm_dump {
 
     return if exists $memory->{$addr};
 
-    $memory->{$addr} = 1;
-    $memory->{$addr} = { $bobj->ppvm_dump($memory) };
+    $memory->{$addr} = 1;  # prevent endless recursing
+    return { $addr => ( $memory->{$addr} = { addr => $addr, $bobj->ppvm_dump($memory) } ) };
 };
 
 
@@ -38,75 +38,10 @@ sub compile {
 {
     package B::OBJECT;
     sub ppvm_dump {
-        my ($bobj) = @_;
-        return (
-            class => B::class($bobj),
-        );
-    };
-}
-
-{
-    package B::SV;
-    sub ppvm_dump {
-        my ($bobj) = @_;
-        return (
-            $bobj->SUPER::ppvm_dump,
-            refcnt => $bobj->REFCNT,
-            flags  => $bobj->FLAGS,
-        );
-    };
-}
-
-{
-    package B::IV;
-    sub ppvm_dump {
-        my ($bobj) = @_;
-        return (
-            $bobj->SUPER::ppvm_dump,
-            iv => $bobj->int_value,
-        );
-    };
-}
-
-{
-    package B::PV;
-    sub ppvm_dump {
-        my ($bobj) = @_;
-        return (
-            $bobj->SUPER::ppvm_dump,
-            pv => $bobj->PV,
-        );
-    };
-}
-
-{
-    package B::PVIV;
-    sub ppvm_dump {
-        my ($bobj) = @_;
-        return (
-            $bobj->SUPER::ppvm_dump,
-            iv => $bobj->int_value,
-            pv => $bobj->PV,
-        );
-    };
-}
-
-{
-    package B::PVMG;
-    sub ppvm_dump {
-        my ($bobj, $memory) = @_;
-
-        B::PPVM::ppvm_dump($memory, $_) foreach $bobj->MAGIC;
-        
-        my $svstash = $bobj->SvSTASH->isa('B::HV') && $bobj->SvSTASH->NAME ne 'B::MAGIC'
-            ? $bobj->SvSTASH
-            : undef;
-        B::PPVM::ppvm_dump($memory, $bobj->SvSTASH) if $svstash;
+        my ($self) = shift;
 
         return (
-            $bobj->SUPER::ppvm_dump,
-            magic   => [ map { ${$_} } $bobj->MAGIC ],
-            svstash => $svstash ? ${$svstash} : 0,
+            class => B::class($self),
         );
     };
 }
@@ -114,11 +49,128 @@ sub compile {
 {
     package B::MAGIC;
     sub ppvm_dump {
-        my ($bobj) = @_;
+        my ($self) = shift;
+
         return (
-            class => B::class($bobj),
-            type  => $bobj->TYPE,
-            ptr   => $bobj->PTR,
+            class => B::class($self),
+            type  => $self->TYPE,
+            ptr   => $self->PTR,
+        );
+    };
+}
+
+{
+    package B::SV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        return (
+            $self->SUPER::ppvm_dump(@args),
+            refcnt => $self->REFCNT,
+            flags  => $self->FLAGS,
+        );
+    };
+}
+
+{
+    package B::RV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        my $rv = $self->RV;
+        B::PPVM::ppvm_dump($memory, $rv);
+
+        return (
+            $self->B::SV::ppvm_dump(@args),
+            rv => ${$rv},
+        );
+    };
+}
+
+{
+    package B::IV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        return ( $self->B::RV::ppvm_dump(@args), class => 'RV' ) if $self->FLAGS & B::SVf_ROK;
+
+        return (
+            $self->SUPER::ppvm_dump(@args),
+            iv => $self->int_value,
+        );
+    };
+}
+
+{
+    package B::NV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        return (
+            $self->SUPER::ppvm_dump(@args),
+            nv => $self->NV,
+        );
+    };
+}
+
+{
+    package B::PV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        return (
+            $self->SUPER::ppvm_dump(@args),
+            pv => $self->PV,
+        );
+    };
+}
+
+{
+    package B::PVIV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+	return ( $self->B::IV::ppvm_dump(@args), class => 'IV'  ) if $self->FLAGS & B::SVf_IOK;
+	return ( $self->B::PV::ppvm_dump(@args), class => 'PV'  ) if $self->FLAGS & B::SVf_POK;
+	return ();
+    };
+}
+
+{
+    package B::PVNV;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+	return ( $self->B::PVIV::ppvm_dump(@args) ) if $self->FLAGS & (B::SVf_IOK | B::SVf_POK);
+	return ( $self->B::NV::ppvm_dump(@args), class => 'NV' ) if $self->FLAGS & B::SVf_NOK;
+	return ();
+    };
+}
+
+{
+    package B::PVMG;
+    sub ppvm_dump {
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
+
+        B::PPVM::ppvm_dump($memory, $_) foreach $self->MAGIC;
+
+        my $svstash = $self->SvSTASH->isa('B::HV') && $self->SvSTASH->NAME ne 'B::MAGIC'
+            ? $self->SvSTASH
+            : undef;
+        B::PPVM::ppvm_dump($memory, $self->SvSTASH) if $svstash;
+
+        return (
+            $self->B::OBJECT::ppvm_dump(@args),
+            scalar $self->MAGIC ? ( magic   => [ map { ${$_} } $self->MAGIC ] ) : (),
+            ${$svstash} ? ( svstash => ${$svstash} ) : 0,  # FIXME
         );
     };
 }
@@ -126,14 +178,17 @@ sub compile {
 {
     package B::GV;
     sub ppvm_dump {
-        my ($bobj, $memory) = @_;
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
 
-        B::PPVM::ppvm_dump($memory, $bobj->SV);
+        B::PPVM::ppvm_dump($memory, $self->$_) foreach qw(SV AV HV);
 
         return (
-            $bobj->SUPER::ppvm_dump,
-            name => $bobj->NAME,
-            sv   => ${$bobj->SV},
+            $self->SUPER::ppvm_dump(@args),
+            name => $self->NAME,
+            sv   => ${$self->SV},
+            av   => ${$self->AV},
+            hv   => ${$self->HV},
         );
     };
 }
@@ -141,18 +196,19 @@ sub compile {
 {
     package B::HV;
     sub ppvm_dump {
-        my ($bobj, $memory) = @_;
+        my ($self) = shift;
+        my ($memory) = my @args = @_;
 
         my @array;
-        my %hash = $bobj->ARRAY;
+        my %hash = $self->ARRAY;
         while (my ($key, $val) = each %hash) {
             B::PPVM::ppvm_dump($memory, $val);
-            push @array, $key, ${$val};
+            push @array, $key => ${$val};
         };
 
         return (
-            $bobj->SUPER::ppvm_dump,
-            name => $bobj->NAME,
+            $self->SUPER::ppvm_dump(@args),
+            name => $self->NAME,
             array => { @array },
         );
     };
