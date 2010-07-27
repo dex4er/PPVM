@@ -2,23 +2,84 @@
 
 package B::PPVM;
 
-use B;
-
-use YAML::XS;
-
 
 sub compile {
     my @args = @_;
 
+    my @newargs;
+    my $dumper_class = 'B::PPVM::Dumper::YAML';
+
+    foreach my $arg (@args) {
+        if ($arg eq '-perl') {
+            $dumper_class = 'B::PPVM::Dumper::Perl';
+        }
+        elsif ($arg eq '-yaml') {
+            $dumper_class = 'B::PPVM::Dumper::YAML';
+        }
+        elsif ($arg eq '-json') {
+            $dumper_class = 'B::PPVM::Dumper::JSON';
+        }
+        else {
+            push @newargs, $arg;
+        }
+    };
+
     return sub {
         my $memory = B::PPVM::Memory->new;
+        my $dumper = $dumper_class->new;
+
         my $main_stash = \%main::;
 
         $memory->add_object($main_stash);
-        print Dump $memory;
+        $dumper->dump( +{ %{$memory} } );
 
-        return @args;
+        return @newargs;
     };
+};
+
+
+package B::PPVM::Dumper::YAML;
+
+use YAML::Tiny;
+
+sub new {
+    my ($class) = @_;
+    return bless +{} => $class;
+};
+
+sub dump {
+    my ($self, $what) = @_;
+    print Dump $what;
+};
+
+
+package B::PPVM::Dumper::JSON;
+
+use JSON;
+
+sub new {
+    my ($class) = @_;
+    return bless +{} => $class;
+};
+
+sub dump {
+    my ($self, $what) = @_;
+    print encode_json $what;
+};
+
+
+package B::PPVM::Dumper::Perl;
+
+use Data::Dumper;
+
+sub new {
+    my ($class) = @_;
+    return bless +{} => $class;
+};
+
+sub dump {
+    my ($self, $what) = @_;
+    print Dumper $what;
 };
 
 
@@ -247,3 +308,6 @@ sub ppvm_dump {
 
 
 1;
+
+
+# TODO: exclude this package
