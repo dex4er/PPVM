@@ -16,7 +16,12 @@ sub ppvm_dump {
     return if exists $memory->{$addr};
 
     $memory->{$addr} = 1;  # prevent endless recursing
-    return { $addr => ( $memory->{$addr} = { addr => $addr, $bobj->ppvm_dump($memory) } ) };
+    $memory->{$addr} = {
+        addr => $addr,
+        $bobj->ppvm_dump($memory)
+    };
+
+    return { $addr => $memory->{addr} };
 };
 
 
